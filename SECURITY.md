@@ -19,8 +19,7 @@ Instead, use one of these private channels:
 
 1. **GitHub private vulnerability reporting (preferred).** Open the repository's
    **Security** tab and choose **Report a vulnerability** to file a private
-   advisory. (This requires private reporting to be enabled on the repository —
-   see the note below.)
+   advisory.
 2. **Email.** Write to **z.ribin20@gmail.com** with the details.
 
 Please include:
@@ -38,7 +37,3 @@ Please include:
   prefer to remain anonymous.
 
 Thank you for helping keep Stamp and its users safe.
-
-> **Maintainer note:** to enable the "Report a vulnerability" button, turn on
-> **Settings → Code security → Private vulnerability reporting** for this
-> repository on GitHub.
