@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2026 Stamp contributors
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: compile + contrast + smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run the verification gate
+        run: npm test
