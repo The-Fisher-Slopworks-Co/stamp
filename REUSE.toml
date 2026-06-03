@@ -9,6 +9,9 @@ path = [
     "README.md",
     "CHANGELOG.md",
     "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE.md",
     "package.json",
     "package-lock.json",
     "tsconfig.json",
@@ -21,3 +24,10 @@ path = [
 ]
 SPDX-FileCopyrightText = "2026 Stamp contributors"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# CODE_OF_CONDUCT.md is the verbatim Contributor Covenant v2.1, which its authors
+# publish under CC-BY-4.0 — so it keeps its upstream license, not the project's.
+[[annotations]]
+path = "CODE_OF_CONDUCT.md"
+SPDX-FileCopyrightText = "2014 Coraline Ada Ehmke and the Contributor Covenant contributors"
+SPDX-License-Identifier = "CC-BY-4.0"
