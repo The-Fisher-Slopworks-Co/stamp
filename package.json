@@ -2,7 +2,7 @@
   "name": "stamp",
   "displayName": "Stamp — Per-Project Status Bar Color",
   "description": "Give each project its own status bar color, with automatic light/dark-readable text.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "The-Fisher-Slopworks-Co",
   "license": "AGPL-3.0-or-later",
   "repository": {

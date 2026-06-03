@@ -2,6 +2,14 @@
 
 All notable changes to the **Stamp** extension are documented here.
 
+## [0.1.1] - 2026-06-04
+
+### Changed
+
+- Normalized the Marketplace publisher id to `The-Fisher-Slopworks-Co` to match
+  the repository URL.
+- Renamed `LICENSE.md` to `LICENSE.txt` (REUSE annotation updated accordingly).
+
 ## [0.1.0] - 2026-06-03
 
 ### Added
