@@ -1,0 +1,23 @@
+version = 1
+
+# Files that cannot carry an inline SPDX header (JSON has no comment syntax,
+# icon.png is binary) or are kept comment-free on purpose (docs, dotfiles).
+# Source code (*.ts, *.mjs) and the workflow YAML carry headers inline instead.
+
+[[annotations]]
+path = [
+    "README.md",
+    "CHANGELOG.md",
+    "CLAUDE.md",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json",
+    ".gitignore",
+    ".vscodeignore",
+    ".vscode/launch.json",
+    ".vscode/tasks.json",
+    ".claude/settings.json",
+    "icon.png",
+]
+SPDX-FileCopyrightText = "2026 Stamp contributors"
+SPDX-License-Identifier = "AGPL-3.0-or-later"

@@ -1,0 +1,108 @@
+{
+  "name": "stamp",
+  "displayName": "Stamp — Per-Project Status Bar Color",
+  "description": "Give each project its own status bar color, with automatic light/dark-readable text.",
+  "version": "0.1.0",
+  "publisher": "TheFisherSlopworksCo",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/The-Fisher-Slopworks-Co/stamp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/The-Fisher-Slopworks-Co/stamp/issues"
+  },
+  "homepage": "https://github.com/The-Fisher-Slopworks-Co/stamp#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "status bar",
+    "statusbar",
+    "color",
+    "colour",
+    "workspace",
+    "project",
+    "peacock"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1565c0",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "stamp.setColor",
+        "title": "Set Status Bar Color",
+        "category": "Stamp"
+      },
+      {
+        "command": "stamp.setCustomColor",
+        "title": "Set Custom Color (hex)",
+        "category": "Stamp"
+      },
+      {
+        "command": "stamp.autoColor",
+        "title": "Auto Color from Project Name",
+        "category": "Stamp"
+      },
+      {
+        "command": "stamp.clearColor",
+        "title": "Clear Status Bar Color",
+        "category": "Stamp"
+      }
+    ],
+    "configuration": {
+      "title": "Stamp",
+      "properties": {
+        "stamp.color": {
+          "type": "string",
+          "scope": "resource",
+          "description": "This project's base status bar color (hex). Set it via the Stamp commands. The shade actually painted is derived from this for the active light/dark theme."
+        },
+        "stamp.showStatusBarItem": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Stamp paintcan item in the status bar."
+        },
+        "stamp.autoColorOnOpen": {
+          "type": "boolean",
+          "default": false,
+          "description": "When a workspace opens without a Stamp color, automatically assign one derived from the project name."
+        },
+        "stamp.lightForeground": {
+          "type": "string",
+          "default": "#ffffff",
+          "description": "Foreground (text) color used on dark backgrounds. Must be a hex color."
+        },
+        "stamp.darkForeground": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "Foreground (text) color used on light backgrounds. Must be a hex color."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "make:icon": "node scripts/make-icon.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "test": "npm run compile && node scripts/check-contrast.mjs && node scripts/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
