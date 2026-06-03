@@ -63,6 +63,6 @@ canonical state. `stamp.color` is what you commit to share a project's color.
 ## Before publishing
 
 `package.json` metadata (`publisher`, `repository`, `bugs`, `homepage`) is filled
-in. To ship to the Marketplace you still need the `TheFisherSlopworksCo` publisher
+in. To ship to the Marketplace you still need the `The-Fisher-Slopworks-Co` publisher
 to exist with a Personal Access Token, then `npx @vscode/vsce publish`. Build a
 local `.vsix` first with `npx @vscode/vsce package`.
