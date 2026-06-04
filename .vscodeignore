@@ -7,9 +7,6 @@ scripts/**
 node_modules/**
 .gitignore
 CLAUDE.md
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md
-SECURITY.md
 **/tsconfig.json
 **/*.map
 **/*.ts
