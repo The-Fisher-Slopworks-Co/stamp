@@ -11,7 +11,7 @@ path = [
     "CLAUDE.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
     ".github/ISSUE_TEMPLATE/feature_request.md",
-    "LICENSE.txt",
+    "LICENSE",
     "package.json",
     "package-lock.json",
     "tsconfig.json",
@@ -22,5 +22,5 @@ path = [
     ".claude/settings.json",
     "icon.png",
 ]
-SPDX-FileCopyrightText = "2026 Stamp contributors"
+SPDX-FileCopyrightText = "2026 The Fisher Slopworks Co"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
