@@ -21,6 +21,8 @@ path = [
     ".vscode/tasks.json",
     ".claude/settings.json",
     "icon.png",
+    "images/screenshot-light.png",
+    "images/screenshot-dark.png",
 ]
 SPDX-FileCopyrightText = "2026 The Fisher Slopworks Co"
 SPDX-License-Identifier = "AGPL-3.0-or-later"

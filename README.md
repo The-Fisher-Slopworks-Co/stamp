@@ -6,6 +6,13 @@ looks right in **both light and dark themes**.
 
 > Project 1 → green · Project 2 → blue · and so on.
 
+The same base color (`#ef6c00`) in a light and a dark theme — the dark theme
+gets a deepened, desaturated shade automatically:
+
+![Stamp in a light theme](images/screenshot-light.png)
+
+![Stamp in a dark theme](images/screenshot-dark.png)
+
 ---
 
 ## How it works
