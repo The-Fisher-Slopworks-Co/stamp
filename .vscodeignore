@@ -4,6 +4,7 @@
 .github/**
 src/**
 scripts/**
+images/**
 node_modules/**
 .gitignore
 CLAUDE.md
