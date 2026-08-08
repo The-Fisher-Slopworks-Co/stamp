@@ -9,9 +9,7 @@ looks right in **both light and dark themes**.
 The same base color (`#ef6c00`) in a light and a dark theme — the dark theme
 gets a deepened, desaturated shade automatically:
 
-![Stamp in a light theme](images/screenshot-light.png)
-
-![Stamp in a dark theme](images/screenshot-dark.png)
+![Stamp in a light theme (left) and a dark theme (right)](images/screenshot.png)
 
 ---
 
