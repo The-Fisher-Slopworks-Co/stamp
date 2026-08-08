@@ -2,6 +2,13 @@
 
 All notable changes to the **Stamp** extension are documented here.
 
+## [0.1.2] - 2026-08-09
+
+### Changed
+
+- The README now opens with a combined screenshot: the same base color in a
+  light theme (left) and a dark theme (right).
+
 ## [0.1.1] - 2026-06-04
 
 ### Changed
