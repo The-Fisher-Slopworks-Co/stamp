@@ -7,7 +7,7 @@ import {
   normalizeHex,
   readability,
   themedBackground,
-  ThemeMode,
+  type ThemeMode,
 } from "./color";
 
 /**

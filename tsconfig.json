@@ -10,6 +10,19 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    // An optional property means "may be absent", not "may be present and
+    // undefined" — so a maybe-undefined value can't be forwarded into one by
+    // accident.
+    "exactOptionalPropertyTypes": true,
+    // The org standard's `verbatimModuleSyntax` rejects every `import` and
+    // `export` in a CommonJS module, and a VS Code extension for ^1.85 has to
+    // ship as CommonJS. `isolatedModules` is the per-file guarantee that is
+    // left, and oxlint's `consistent-type-imports` keeps type-only imports
+    // spelled `import type`.
+    "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
