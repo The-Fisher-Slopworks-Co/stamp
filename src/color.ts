@@ -15,8 +15,8 @@ export interface RGB {
   b: number; // 0–255
 }
 
-export const DEFAULT_LIGHT_FOREGROUND = '#ffffff';
-export const DEFAULT_DARK_FOREGROUND = '#15202b';
+export const DEFAULT_LIGHT_FOREGROUND = "#ffffff";
+export const DEFAULT_DARK_FOREGROUND = "#15202b";
 
 const HEX_RE = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 
@@ -37,11 +37,11 @@ export function normalizeHex(input: string): string | undefined {
   let hex = match[1];
   if (hex.length === 3) {
     hex = hex
-      .split('')
+      .split("")
       .map((c) => c + c)
-      .join('');
+      .join("");
   }
-  return '#' + hex.toLowerCase();
+  return "#" + hex.toLowerCase();
 }
 
 export function hexToRgb(hex: string): RGB | undefined {
@@ -58,8 +58,11 @@ export function hexToRgb(hex: string): RGB | undefined {
 }
 
 export function rgbToHex({ r, g, b }: RGB): string {
-  const toHex = (v: number) => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, '0');
-  return '#' + toHex(r) + toHex(g) + toHex(b);
+  const toHex = (v: number) =>
+    Math.round(clamp(v, 0, 255))
+      .toString(16)
+      .padStart(2, "0");
+  return "#" + toHex(r) + toHex(g) + toHex(b);
 }
 
 /** sRGB channel (0–255) → linear-light value, per WCAG 2.x. */
@@ -109,8 +112,14 @@ export function readability(
     return { foreground: safeLight, contrast: 0 };
   }
   const bgLum = relativeLuminance(bg);
-  const lightContrast = contrastRatio(bgLum, relativeLuminance(hexToRgb(safeLight)!));
-  const darkContrast = contrastRatio(bgLum, relativeLuminance(hexToRgb(safeDark)!));
+  const lightContrast = contrastRatio(
+    bgLum,
+    relativeLuminance(hexToRgb(safeLight)!),
+  );
+  const darkContrast = contrastRatio(
+    bgLum,
+    relativeLuminance(hexToRgb(safeDark)!),
+  );
   return lightContrast >= darkContrast
     ? { foreground: safeLight, contrast: lightContrast }
     : { foreground: safeDark, contrast: darkContrast };
@@ -174,7 +183,7 @@ export function rgbToHsl({ r, g, b }: RGB): HSL {
   const s = d / (1 - Math.abs(2 * l - 1));
   let h: number;
   if (max === rn) {
-    h = (((gn - bn) / d) % 6 + 6) % 6;
+    h = ((((gn - bn) / d) % 6) + 6) % 6;
   } else if (max === gn) {
     h = (bn - rn) / d + 2;
   } else {
@@ -188,7 +197,7 @@ export function hexToHsl(hex: string): HSL | undefined {
   return rgb ? rgbToHsl(rgb) : undefined;
 }
 
-export type ThemeMode = 'dark' | 'light';
+export type ThemeMode = "dark" | "light";
 
 /**
  * In dark themes a vivid status bar glares against the dim editor UI, so the
@@ -211,11 +220,15 @@ export function themedBackground(base: string, mode: ThemeMode): string {
   if (!normalized) {
     return base;
   }
-  if (mode === 'light') {
+  if (mode === "light") {
     return normalized;
   }
   const hsl = hexToHsl(normalized)!;
-  return hslToHex(hsl.h, Math.min(hsl.s, DARK_SATURATION_CAP), Math.min(hsl.l, DARK_LIGHTNESS_CAP));
+  return hslToHex(
+    hsl.h,
+    Math.min(hsl.s, DARK_SATURATION_CAP),
+    Math.min(hsl.l, DARK_LIGHTNESS_CAP),
+  );
 }
 
 /**
