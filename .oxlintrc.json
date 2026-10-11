@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {
+    // The smoke test intercepts `require("vscode")` by wrapping Node's own
+    // `Module._load`, whose name is not ours to change. Every other dangling
+    // underscore still fails.
+    "no-underscore-dangle": ["error", { "allow": ["_load"] }]
+  },
+  "ignorePatterns": ["node_modules", "out"]
+}
