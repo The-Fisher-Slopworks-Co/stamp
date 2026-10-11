@@ -8,7 +8,10 @@
     // The smoke test intercepts `require("vscode")` by wrapping Node's own
     // `Module._load`, whose name is not ours to change. Every other dangling
     // underscore still fails.
-    "no-underscore-dangle": ["error", { "allow": ["_load"] }]
+    "no-underscore-dangle": ["error", { "allow": ["_load"] }],
+    // Stands in for `verbatimModuleSyntax`, which a CommonJS build cannot
+    // enable (see tsconfig.json).
+    "typescript/consistent-type-imports": "error"
   },
   "ignorePatterns": ["node_modules", "out"]
 }

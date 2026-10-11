@@ -30,11 +30,12 @@ function clamp(value: number, min: number, max: number): number {
  * input is not a valid hex color.
  */
 export function normalizeHex(input: string): string | undefined {
-  const match = input.trim().match(HEX_RE);
-  if (!match) {
+  // The one capture group always takes part in a match, so `undefined` here
+  // means "no match".
+  let hex = input.trim().match(HEX_RE)?.[1];
+  if (hex === undefined) {
     return undefined;
   }
-  let hex = match[1];
   if (hex.length === 3) {
     hex = hex
       .split("")
