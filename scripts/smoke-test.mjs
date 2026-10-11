@@ -224,10 +224,10 @@ await test("all package.json commands are registered (and vice versa)", async ()
   const pkg = JSON.parse(
     readFileSync(path.join(here, "..", "package.json"), "utf8"),
   );
-  const declared = pkg.contributes.commands.map((c) => c.command).sort();
+  const declared = pkg.contributes.commands.map((c) => c.command).toSorted();
   const mock = buildMock(freshState());
   loadExtension(mock);
-  const registered = [...mock.calls.commands.keys()].sort();
+  const registered = [...mock.calls.commands.keys()].toSorted();
   assert.deepEqual(
     registered,
     declared,
@@ -254,7 +254,10 @@ await test("setColor in a DARK theme stores the base and paints a deepened shade
   assert.equal(state.workspace["statusBar.foreground"], fg);
   assert.equal(state.workspace["statusBar.debuggingBackground"], bg);
   assert.equal(state.workspace["statusBar.noFolderBackground"], bg);
-  assert.deepEqual(stampKeysIn(state.workspace).sort(), [...STAMP_KEYS].sort());
+  assert.deepEqual(
+    stampKeysIn(state.workspace).toSorted(),
+    STAMP_KEYS.toSorted(),
+  );
   assert.equal(mock.calls.errors.length, 0);
   assert.equal(mock.calls.warnings.length, 0);
 });

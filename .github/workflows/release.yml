@@ -10,12 +10,18 @@ on:
       - 'v*'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+
   release:
     name: Build .vsix and publish to Releases
+    needs: check
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -26,11 +32,10 @@ jobs:
           node-version: 20
           cache: npm
 
+      # `prepare` installs the lefthook git hook, which the packaging below
+      # never needs; `vsce package` compiles through `vscode:prepublish`.
       - name: Install dependencies
-        run: npm ci
-
-      - name: Run the verification gate
-        run: npm test
+        run: npm ci --ignore-scripts
 
       - name: Package the extension
         run: npx --yes @vscode/vsce package --out "stamp-${{ github.ref_name }}.vsix"

@@ -9,7 +9,7 @@
  * with plain Node (see scripts/check-contrast.mjs).
  */
 
-export interface RGB {
+interface RGB {
   r: number; // 0–255
   g: number; // 0–255
   b: number; // 0–255
@@ -57,12 +57,15 @@ export function hexToRgb(hex: string): RGB | undefined {
   };
 }
 
-export function rgbToHex({ r, g, b }: RGB): string {
-  const toHex = (v: number) =>
-    Math.round(clamp(v, 0, 255))
-      .toString(16)
-      .padStart(2, "0");
-  return "#" + toHex(r) + toHex(g) + toHex(b);
+/** One 0–255 channel → two lowercase hex digits. */
+function channelToHex(v: number): string {
+  return Math.round(clamp(v, 0, 255))
+    .toString(16)
+    .padStart(2, "0");
+}
+
+function rgbToHex({ r, g, b }: RGB): string {
+  return "#" + channelToHex(r) + channelToHex(g) + channelToHex(b);
 }
 
 /** sRGB channel (0–255) → linear-light value, per WCAG 2.x. */
@@ -162,14 +165,14 @@ export function hslToHex(h: number, s: number, l: number): string {
   return rgbToHex({ r: (r + m) * 255, g: (g + m) * 255, b: (b + m) * 255 });
 }
 
-export interface HSL {
+interface HSL {
   h: number; // 0–360
   s: number; // 0–1
   l: number; // 0–1
 }
 
 /** Convert RGB (0–255) to HSL (h in [0,360), s & l in [0,1]). */
-export function rgbToHsl({ r, g, b }: RGB): HSL {
+function rgbToHsl({ r, g, b }: RGB): HSL {
   const rn = r / 255;
   const gn = g / 255;
   const bn = b / 255;
