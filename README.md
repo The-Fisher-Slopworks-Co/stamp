@@ -85,6 +85,5 @@ code --install-extension stamp-0.1.0.vsix
 
 ## License
 
-GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later) — see
-[`LICENSES/AGPL-3.0-or-later.txt`](./LICENSES/AGPL-3.0-or-later.txt). This
-project is [REUSE](https://reuse.software/)-compliant.
+AGPL-3.0-or-later. See [LICENSE](LICENSE). This project is
+[REUSE](https://reuse.software/)-compliant.
