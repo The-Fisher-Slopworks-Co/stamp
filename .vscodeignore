@@ -11,3 +11,5 @@ CLAUDE.md
 **/tsconfig.json
 **/*.map
 **/*.ts
+AGENTS.md
+REUSE.toml
