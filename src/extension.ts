@@ -2,9 +2,15 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import * as vscode from 'vscode';
-import { colorFromString, normalizeHex, WCAG_AA } from './color';
-import { applyColor, clearColor, getCurrentColor, getWorkspaceColor, reapply } from './settings';
+import * as vscode from "vscode";
+import { colorFromString, normalizeHex, WCAG_AA } from "./color";
+import {
+  applyColor,
+  clearColor,
+  getCurrentColor,
+  getWorkspaceColor,
+  reapply,
+} from "./settings";
 
 interface PaletteColor {
   label: string;
@@ -12,40 +18,46 @@ interface PaletteColor {
 }
 
 const PALETTE: PaletteColor[] = [
-  { label: 'Green', hex: '#2e7d32' },
-  { label: 'Blue', hex: '#1565c0' },
-  { label: 'Teal', hex: '#00838f' },
-  { label: 'Indigo', hex: '#283593' },
-  { label: 'Purple', hex: '#6a1b9a' },
-  { label: 'Pink', hex: '#ad1457' },
-  { label: 'Red', hex: '#c62828' },
-  { label: 'Orange', hex: '#ef6c00' },
-  { label: 'Brown', hex: '#4e342e' },
-  { label: 'Slate', hex: '#37474f' },
+  { label: "Green", hex: "#2e7d32" },
+  { label: "Blue", hex: "#1565c0" },
+  { label: "Teal", hex: "#00838f" },
+  { label: "Indigo", hex: "#283593" },
+  { label: "Purple", hex: "#6a1b9a" },
+  { label: "Pink", hex: "#ad1457" },
+  { label: "Red", hex: "#c62828" },
+  { label: "Orange", hex: "#ef6c00" },
+  { label: "Brown", hex: "#4e342e" },
+  { label: "Slate", hex: "#37474f" },
 ];
 
 interface ColorQuickPick extends vscode.QuickPickItem {
   hex?: string;
-  action?: 'custom' | 'auto' | 'clear';
+  action?: "custom" | "auto" | "clear";
 }
 
 let statusItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext): void {
-  statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
-  statusItem.command = 'stamp.setColor';
+  statusItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    0,
+  );
+  statusItem.command = "stamp.setColor";
   context.subscriptions.push(statusItem);
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('stamp.setColor', setColorCommand),
-    vscode.commands.registerCommand('stamp.setCustomColor', setCustomColorCommand),
-    vscode.commands.registerCommand('stamp.autoColor', autoColorCommand),
-    vscode.commands.registerCommand('stamp.clearColor', clearColorCommand),
+    vscode.commands.registerCommand("stamp.setColor", setColorCommand),
+    vscode.commands.registerCommand(
+      "stamp.setCustomColor",
+      setCustomColorCommand,
+    ),
+    vscode.commands.registerCommand("stamp.autoColor", autoColorCommand),
+    vscode.commands.registerCommand("stamp.clearColor", clearColorCommand),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (
-        event.affectsConfiguration('workbench.colorCustomizations') ||
-        event.affectsConfiguration('stamp.color') ||
-        event.affectsConfiguration('stamp.showStatusBarItem')
+        event.affectsConfiguration("workbench.colorCustomizations") ||
+        event.affectsConfiguration("stamp.color") ||
+        event.affectsConfiguration("stamp.showStatusBarItem")
       ) {
         updateStatusItem();
       }
@@ -84,27 +96,30 @@ async function setColorCommand(): Promise<void> {
     description: color.hex,
     hex: color.hex,
   }));
-  items.push({ label: '', kind: vscode.QuickPickItemKind.Separator });
-  items.push({ label: '$(paintcan) Custom hex…', action: 'custom' });
-  items.push({ label: '$(symbol-color) Auto from project name', action: 'auto' });
-  items.push({ label: '$(clear-all) Clear color', action: 'clear' });
+  items.push({ label: "", kind: vscode.QuickPickItemKind.Separator });
+  items.push({ label: "$(paintcan) Custom hex…", action: "custom" });
+  items.push({
+    label: "$(symbol-color) Auto from project name",
+    action: "auto",
+  });
+  items.push({ label: "$(clear-all) Clear color", action: "clear" });
 
   const pick = await vscode.window.showQuickPick(items, {
-    title: 'Stamp — choose a status bar color',
-    placeHolder: 'Pick a color for this project',
+    title: "Stamp — choose a status bar color",
+    placeHolder: "Pick a color for this project",
     matchOnDescription: true,
   });
   if (!pick) {
     return;
   }
   switch (pick.action) {
-    case 'custom':
+    case "custom":
       await setCustomColorCommand();
       return;
-    case 'auto':
+    case "auto":
       await autoColorCommand();
       return;
-    case 'clear':
+    case "clear":
       await clearColorCommand();
       return;
   }
@@ -115,13 +130,13 @@ async function setColorCommand(): Promise<void> {
 
 async function setCustomColorCommand(): Promise<void> {
   const input = await vscode.window.showInputBox({
-    title: 'Stamp — custom color',
-    prompt: 'Enter a hex color, e.g. #2e7d32 or 2e7d32',
-    value: getWorkspaceColor() ?? '#2e7d32',
+    title: "Stamp — custom color",
+    prompt: "Enter a hex color, e.g. #2e7d32 or 2e7d32",
+    value: getWorkspaceColor() ?? "#2e7d32",
     validateInput: (value) =>
-      value.trim() === '' || normalizeHex(value)
+      value.trim() === "" || normalizeHex(value)
         ? undefined
-        : 'Enter a valid 3- or 6-digit hex color.',
+        : "Enter a valid 3- or 6-digit hex color.",
   });
   if (input === undefined) {
     return;
@@ -137,7 +152,7 @@ async function autoColorCommand(): Promise<void> {
   const name =
     vscode.workspace.workspaceFolders?.[0]?.name ??
     vscode.workspace.name ??
-    'workspace';
+    "workspace";
   await safeApply(colorFromString(name));
 }
 
@@ -146,7 +161,9 @@ async function clearColorCommand(): Promise<void> {
     const cleared = await clearColor();
     updateStatusItem();
     vscode.window.setStatusBarMessage(
-      cleared ? '$(check) Stamp: color cleared' : '$(info) Stamp: no project color to clear',
+      cleared
+        ? "$(check) Stamp: color cleared"
+        : "$(info) Stamp: no project color to clear",
       2000,
     );
   } catch (error) {
@@ -176,7 +193,9 @@ function updateStatusItem(): void {
   if (!statusItem) {
     return;
   }
-  const show = vscode.workspace.getConfiguration('stamp').get<boolean>('showStatusBarItem', true);
+  const show = vscode.workspace
+    .getConfiguration("stamp")
+    .get<boolean>("showStatusBarItem", true);
   if (!show) {
     statusItem.hide();
     return;
@@ -184,21 +203,21 @@ function updateStatusItem(): void {
   const base = getWorkspaceColor(); // the project's base color (theme-independent)
   const effective = getCurrentColor(); // what is actually painted right now
   const shown = base ?? effective;
-  statusItem.text = shown ? `$(paintcan) ${shown}` : '$(paintcan) Stamp';
+  statusItem.text = shown ? `$(paintcan) ${shown}` : "$(paintcan) Stamp";
   if (base) {
     statusItem.tooltip = `Stamp project color: ${base} (adapts to light/dark theme)\nClick to change`;
   } else if (effective) {
     statusItem.tooltip = `Inherited status bar color: ${effective}\nClick to set one for this project`;
   } else {
-    statusItem.tooltip = 'Set a status bar color for this project';
+    statusItem.tooltip = "Set a status bar color for this project";
   }
   statusItem.show();
 }
 
 async function maybeAutoApplyOnStartup(): Promise<void> {
   const enabled = vscode.workspace
-    .getConfiguration('stamp')
-    .get<boolean>('autoColorOnOpen', false);
+    .getConfiguration("stamp")
+    .get<boolean>("autoColorOnOpen", false);
   if (!enabled) {
     return;
   }

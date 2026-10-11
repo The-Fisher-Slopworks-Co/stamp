@@ -98,11 +98,14 @@
     "make:icon": "node scripts/make-icon.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "smoke": "node scripts/smoke-test.mjs",
-    "test": "npm run compile && node scripts/check-contrast.mjs && node scripts/smoke-test.mjs"
+    "test": "npm run compile && node scripts/check-contrast.mjs && node scripts/smoke-test.mjs",
+    "format": "prettier --write \"{src,scripts}/**/*.{ts,mjs}\"",
+    "format:check": "prettier --check \"{src,scripts}/**/*.{ts,mjs}\""
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
+    "prettier": "^3.9.10",
     "typescript": "^5.4.0"
   }
 }

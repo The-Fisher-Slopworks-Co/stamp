@@ -2,8 +2,13 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import * as vscode from 'vscode';
-import { normalizeHex, readability, themedBackground, ThemeMode } from './color';
+import * as vscode from "vscode";
+import {
+  normalizeHex,
+  readability,
+  themedBackground,
+  ThemeMode,
+} from "./color";
 
 /**
  * The `workbench.colorCustomizations` keys that Stamp owns. Setting the whole
@@ -12,29 +17,29 @@ import { normalizeHex, readability, themedBackground, ThemeMode } from './color'
  * or a remote is involved.
  */
 const STAMP_KEYS = [
-  'statusBar.background',
-  'statusBar.foreground',
-  'statusBar.debuggingBackground',
-  'statusBar.debuggingForeground',
-  'statusBar.noFolderBackground',
-  'statusBarItem.remoteBackground',
-  'statusBarItem.remoteForeground',
+  "statusBar.background",
+  "statusBar.foreground",
+  "statusBar.debuggingBackground",
+  "statusBar.debuggingForeground",
+  "statusBar.noFolderBackground",
+  "statusBarItem.remoteBackground",
+  "statusBarItem.remoteForeground",
 ] as const;
 
-const BACKGROUND_KEY = 'statusBar.background';
-const FOREGROUND_KEY = 'statusBar.foreground';
+const BACKGROUND_KEY = "statusBar.background";
+const FOREGROUND_KEY = "statusBar.foreground";
 
 /** The workspace setting holding the project's BASE color (the source of truth). */
-const COLOR_SETTING = 'color';
+const COLOR_SETTING = "color";
 
 type Customizations = Record<string, unknown>;
 
 function workbenchConfig(): vscode.WorkspaceConfiguration {
-  return vscode.workspace.getConfiguration('workbench');
+  return vscode.workspace.getConfiguration("workbench");
 }
 
 function stampConfig(): vscode.WorkspaceConfiguration {
-  return vscode.workspace.getConfiguration('stamp');
+  return vscode.workspace.getConfiguration("stamp");
 }
 
 function hasWorkspace(): boolean {
@@ -44,9 +49,10 @@ function hasWorkspace(): boolean {
 /** Whether the active editor theme is dark (incl. high-contrast dark) or light. */
 function currentMode(): ThemeMode {
   const kind = vscode.window.activeColorTheme?.kind;
-  return kind === vscode.ColorThemeKind.Light || kind === vscode.ColorThemeKind.HighContrastLight
-    ? 'light'
-    : 'dark';
+  return kind === vscode.ColorThemeKind.Light ||
+    kind === vscode.ColorThemeKind.HighContrastLight
+    ? "light"
+    : "dark";
 }
 
 /**
@@ -54,9 +60,11 @@ function currentMode(): ThemeMode {
  * value (so the status bar item reflects whatever color is actually painted).
  */
 export function getCurrentColor(): string | undefined {
-  const customizations = workbenchConfig().get<Customizations>('colorCustomizations');
+  const customizations = workbenchConfig().get<Customizations>(
+    "colorCustomizations",
+  );
   const value = customizations?.[BACKGROUND_KEY];
-  return typeof value === 'string' ? value : undefined;
+  return typeof value === "string" ? value : undefined;
 }
 
 /**
@@ -67,7 +75,7 @@ export function getCurrentColor(): string | undefined {
  */
 export function getWorkspaceColor(): string | undefined {
   const value = stampConfig().inspect<string>(COLOR_SETTING)?.workspaceValue;
-  return typeof value === 'string' ? normalizeHex(value) : undefined;
+  return typeof value === "string" ? normalizeHex(value) : undefined;
 }
 
 /**
@@ -78,8 +86,12 @@ export function getWorkspaceColor(): string | undefined {
  * than a spread of a string/array into numeric-index keys.
  */
 function readWorkspaceCustomizations(): Customizations {
-  const workspaceValue = workbenchConfig().inspect<Customizations>('colorCustomizations')?.workspaceValue;
-  return workspaceValue && typeof workspaceValue === 'object' && !Array.isArray(workspaceValue)
+  const workspaceValue = workbenchConfig().inspect<Customizations>(
+    "colorCustomizations",
+  )?.workspaceValue;
+  return workspaceValue &&
+    typeof workspaceValue === "object" &&
+    !Array.isArray(workspaceValue)
     ? { ...workspaceValue }
     : {};
 }
@@ -95,24 +107,31 @@ async function writeThemedColor(base: string): Promise<number> {
   const stamp = stampConfig();
   const { foreground, contrast } = readability(
     background,
-    stamp.get<string>('lightForeground'),
-    stamp.get<string>('darkForeground'),
+    stamp.get<string>("lightForeground"),
+    stamp.get<string>("darkForeground"),
   );
 
   const next = readWorkspaceCustomizations();
-  if (next[BACKGROUND_KEY] === background && next[FOREGROUND_KEY] === foreground) {
+  if (
+    next[BACKGROUND_KEY] === background &&
+    next[FOREGROUND_KEY] === foreground
+  ) {
     return contrast; // already up to date for this theme
   }
 
-  next['statusBar.background'] = background;
-  next['statusBar.foreground'] = foreground;
-  next['statusBar.debuggingBackground'] = background;
-  next['statusBar.debuggingForeground'] = foreground;
-  next['statusBar.noFolderBackground'] = background;
-  next['statusBarItem.remoteBackground'] = background;
-  next['statusBarItem.remoteForeground'] = foreground;
+  next["statusBar.background"] = background;
+  next["statusBar.foreground"] = foreground;
+  next["statusBar.debuggingBackground"] = background;
+  next["statusBar.debuggingForeground"] = foreground;
+  next["statusBar.noFolderBackground"] = background;
+  next["statusBarItem.remoteBackground"] = background;
+  next["statusBarItem.remoteForeground"] = foreground;
 
-  await workbenchConfig().update('colorCustomizations', next, vscode.ConfigurationTarget.Workspace);
+  await workbenchConfig().update(
+    "colorCustomizations",
+    next,
+    vscode.ConfigurationTarget.Workspace,
+  );
   return contrast;
 }
 
@@ -123,9 +142,15 @@ async function writeThemedColor(base: string): Promise<number> {
  */
 export async function applyColor(base: string): Promise<number> {
   if (!hasWorkspace()) {
-    throw new Error('Open a folder or workspace first — Stamp stores the color in workspace settings.');
+    throw new Error(
+      "Open a folder or workspace first — Stamp stores the color in workspace settings.",
+    );
   }
-  await stampConfig().update(COLOR_SETTING, base, vscode.ConfigurationTarget.Workspace);
+  await stampConfig().update(
+    COLOR_SETTING,
+    base,
+    vscode.ConfigurationTarget.Workspace,
+  );
   return writeThemedColor(base);
 }
 
@@ -151,12 +176,16 @@ export async function reapply(): Promise<void> {
  */
 export async function clearColor(): Promise<boolean> {
   if (!hasWorkspace()) {
-    throw new Error('No workspace folder is open.');
+    throw new Error("No workspace folder is open.");
   }
 
   const hadBase = getWorkspaceColor() !== undefined;
   if (hadBase) {
-    await stampConfig().update(COLOR_SETTING, undefined, vscode.ConfigurationTarget.Workspace);
+    await stampConfig().update(
+      COLOR_SETTING,
+      undefined,
+      vscode.ConfigurationTarget.Workspace,
+    );
   }
 
   const next = readWorkspaceCustomizations();
@@ -170,7 +199,7 @@ export async function clearColor(): Promise<boolean> {
   if (changedCustomizations) {
     const isEmpty = Object.keys(next).length === 0;
     await workbenchConfig().update(
-      'colorCustomizations',
+      "colorCustomizations",
       // Writing `undefined` removes the key entirely instead of leaving `{}`.
       isEmpty ? undefined : next,
       vscode.ConfigurationTarget.Workspace,

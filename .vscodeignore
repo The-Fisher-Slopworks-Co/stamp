@@ -13,3 +13,4 @@ CLAUDE.md
 **/*.ts
 AGENTS.md
 REUSE.toml
+.prettierrc.json
